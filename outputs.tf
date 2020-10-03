@@ -1,6 +1,6 @@
-output lb_dns{
+output application_lb_dns{
     value = module.phase1.lb_dns
 }
-output ha_instances_ip{
-    value = module.phase2.aws_instance_ip
+output ha_lb_dns{
+    value = module.phase2.lb_dns
 }
