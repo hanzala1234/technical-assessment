@@ -23,3 +23,12 @@ variable number_of_instances{
     type             = number
     description      = "Number of instances for ha proxy"
 }
+variable target_group_arns{
+    type        = list(string)
+    description = "Target groups to attach ec2 instances"
+    default     = []
+}
+variable additional_lb_rules{
+    description  = "security gropu rules for granting access to loadbalancer"
+    default      = []
+}

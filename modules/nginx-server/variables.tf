@@ -26,3 +26,15 @@ variable asg_desired_capacity{
     type           = number
     description    = "Desired number of instances for asg"
 }
+variable additional_lb_rules{
+    description  = "security gropu rules for granting access to loadbalancer"
+    default      = []
+}
+variable target_group_arns{
+    type        = list(string)
+    description = "Target groups to attach ec2 instances"
+    default     = []
+}
+variable vpc{
+    description = "VPC for ec2 instances"
+}
