@@ -10,8 +10,8 @@ data "aws_subnet_ids" "subnets" {
 module phase1_nginx_server{
     source                 = "./modules/nginx-server"
     service_name           = var.phase1_service_name
-    ami_id                 = "ami-0de12f76efe134f2f"
-    instance_type          = "t2.micro"
+    ami_id                 = var.ami_id
+    instance_type          = var.instance_type
     region                 = var.region
     key_name               = var.key_name
     asg_max_size           = 3
@@ -89,6 +89,7 @@ module "alb_nginx" {
 
   tags = {
     Environment = "Terraform"
+    ServiceName = var.phase1_service_name
   }
 }
 
@@ -195,7 +196,7 @@ module "ha_alb" {
 
   tags = {
     Environment = "Terraform"
-    Service     = var.phase2_service_name
+    ServiceName     = var.phase2_service_name
   }
 }
 module  haproxy{
