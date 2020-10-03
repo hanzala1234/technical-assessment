@@ -5,11 +5,12 @@ Before running terraform script , aws environment needs to be configured. Secret
 1) Configure CLI
 type the following command in bash ; It will prompt you for keys
 
-*) aws configure 
+  aws configure 
 
 2) Configure Environment Variable
 
 export AWS_ACCESS_KEY_ID = xxxxx
+
 export AWS_SECRET_ACCESS_KEY =  xxxxxx
 
 
@@ -56,4 +57,5 @@ Add dns entires in /etc/hosts files  with appropirate service dns:
 check the endpoints by:
 
 curl <dns-name>/              --- For default page
+
 curl <dns-name>/health.html   --- For Hostname
