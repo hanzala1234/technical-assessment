@@ -9,7 +9,7 @@ data "aws_subnet_ids" "subnets" {
 ######################################################
 module phase1_nginx_server{
     source                 = "./modules/nginx-server"
-    service_name           = "blah-everc-tf"
+    service_name           = var.phase1_service_name
     ami_id                 = "ami-0de12f76efe134f2f"
     instance_type          = "t2.micro"
     region                 = var.region
@@ -36,14 +36,14 @@ module phase1_nginx_server{
 module "alb_nginx" {
   source                    = "terraform-aws-modules/alb/aws"
   version                   = "~> 5.0"
-  name                      = "${var.service_name}-alb"
+  name                      = "${var.phase1_service_name}-alb"
   load_balancer_type        = "application"
   vpc_id                    = data.aws_vpc.default.id
   subnets                   = data.aws_subnet_ids.subnets.ids
   security_groups           = [module.lb_sg.this_security_group_id]
   target_groups = [
     {
-      name                = "${var.service_name}-default-group"
+      name                = "${var.phase1_service_name}-default-group"
       backend_protocol    = "HTTP"
       backend_port        = 5000
       target_type         = "instance"
@@ -55,7 +55,7 @@ module "alb_nginx" {
       }
     },
       {
-      name                 = "${var.service_name}-health-group"
+      name                 = "${var.phase1_service_name}-health-group"
       backend_protocol     = "HTTP"
       backend_port         = 6000
       target_type          = "instance"
@@ -112,7 +112,7 @@ module "lb_sg" {
   source = "terraform-aws-modules/security-group/aws"
   egress_rules = ["all-all"]
   
-  name                     = "${var.service_name}-alb-sg"
+  name                     = "${var.phase1_service_name}-alb-sg"
   description              = "Security group for user-service with custom ports open within VPC, and PostgreSQL publicly open"
   vpc_id                   = data.aws_vpc.default.id
   ingress_with_cidr_blocks = [
@@ -139,9 +139,9 @@ module "lb_sg" {
 ######################################################
 module phase2_nginx_server{
     source                 = "./modules/nginx-server"
-    service_name           = "blah-everc-tf"
-    ami_id                 = "ami-0de12f76efe134f2f"
-    instance_type          = "t2.micro"
+    service_name           = var.phase2_service_name
+    ami_id                 = var.ami_id 
+    instance_type          = var.instance_type 
     region                 = var.region
     key_name               = var.key_name
     asg_max_size           = 3
@@ -195,14 +195,17 @@ module "ha_alb" {
 
   tags = {
     Environment = "Terraform"
+    Service     = var.phase2_service_name
   }
 }
 module  haproxy{
     source                 = "./modules/ha-proxy"
     autoscaling_group      = module.phase2_nginx_server.autoscaling_group_name
     region                 =var.region
-    ami_id                 = "ami-0de12f76efe134f2f"
-    instance_type          = "t2.micro"
+    ami_id                 = var.ami_id
+    service_name           = var.phase2_service_name
+    instance_type          = var.instance_type
+    vpc                    = data.aws_vpc.default
     key_name               = var.key_name
     number_of_instances    = 2
     target_group_arns      = module.ha_alb.target_group_arns

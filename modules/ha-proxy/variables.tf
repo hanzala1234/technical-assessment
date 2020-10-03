@@ -32,3 +32,10 @@ variable additional_lb_rules{
     description  = "security gropu rules for granting access to loadbalancer"
     default      = []
 }
+variable vpc{
+    description = "VPC for ec2 instances"
+}
+variable service_name{
+    type        = string
+    description = "Name of the service"
+}
