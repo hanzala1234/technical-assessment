@@ -5,7 +5,7 @@ Before running terraform script , aws environment needs to be configured. Secret
 1) Configure CLI
 type the following command in bash ; It will prompt you for keys
 
-  aws configure 
+```  aws configure  ```
 
 2) Configure Environment Variable
 
