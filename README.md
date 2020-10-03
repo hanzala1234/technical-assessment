@@ -3,6 +3,7 @@
 Before running terraform script , aws environment needs to be configured. Secret key and Secret access key is required. There are multiple options for configuring aws environment:
 
 1) Configure CLI
+
 type the following command in bash ; It will prompt you for keys
 
 ```  aws configure  ```
