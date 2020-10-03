@@ -57,6 +57,6 @@ Add dns entires in /etc/hosts files  with appropirate service dns:
 
 check the endpoints by:
 
-curl <dns-name>/              --- For default page
+curl dns-name/              --- For default page
 
-curl <dns-name>/health.html   --- For Hostname
+curl dns-name/health.html   --- For Hostname
